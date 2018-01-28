@@ -59,48 +59,54 @@ namespace TechiesRampage
 			//List<Unit> greenbombsnearby = new List<Unit> ();
 			//greenbombsnearby.Clear ();
 			//enemies.Clear ();
-			greenbombsnearby = new List<Unit>();
-			if (config.techiesRampage.RemoteMines != null) {
-				enemies = ObjectManager.GetEntities<Hero> ().Where (x => (x.Team != main.Team)).ToList();
-				if (enemies.Count > 0) {
 
-					foreach (Hero enemy in enemies) {
-						int bombsneeded = 0;
-						float damage = 0.0f;
-						int bombscounter = 0;
-						damage = AbilityDamage.CalculateDamage (config.techiesRampage.RemoteMines, context.Owner, enemy as Unit, 0, 0, enemy.MagicDamageResist,enemy.Health);
-						//damage = getDamage(enemy);
-						greenbombsnearby = ObjectManager.GetEntities<Unit> ().Where (x => x.IsInRange (enemy, 400) && x.IsAlive && x.Name == "npc_dota_techies_remote_mine" && x.Team == main.Team && x.IsControllableByPlayer (ObjectManager.LocalPlayer)).ToList ();
-						bombsneeded = 0;
-						float damageneeded = 0;
-						while (greenbombsnearby.Count > 0 && damageneeded < enemy.Health) {
-							damageneeded += damage;
-							bombsneeded++;
-						}
+			if (config.EnableCheat) {
 
-				if (greenbombsnearby.Count>0 && greenbombsnearby.Count >= bombsneeded) 
-						{
-							foreach (Unit bomb in greenbombsnearby) {
-								if (bombscounter < bombsneeded) {
-									Ability selfdetonate = UnitExtensions.GetAbilityById (bomb, AbilityId.techies_remote_mines_self_detonate);
-									if (selfdetonate != null) {
-										selfdetonate.UseAbility ();
-										bombscounter++;
+				greenbombsnearby = new List<Unit>();
+				if (config.techiesRampage.RemoteMines != null) {
+					enemies = ObjectManager.GetEntities<Hero> ().Where (x => (x.Team != main.Team)).ToList();
+					if (enemies.Count > 0) {
+
+						foreach (Hero enemy in enemies) {
+							int bombsneeded = 0;
+							float damage = 0.0f;
+							int bombscounter = 0;
+							damage = AbilityDamage.CalculateDamage (config.techiesRampage.RemoteMines, context.Owner, enemy as Unit, 0, 0, enemy.MagicDamageResist,enemy.Health);
+							//damage = getDamage(enemy);
+							greenbombsnearby = ObjectManager.GetEntities<Unit> ().Where (x => x.IsInRange (enemy, 400) && x.IsAlive && x.Name == "npc_dota_techies_remote_mine" && x.Team == main.Team && x.IsControllableByPlayer (ObjectManager.LocalPlayer)).ToList ();
+							bombsneeded = 0;
+							float damageneeded = 0;
+							while (greenbombsnearby.Count > 0 && damageneeded < enemy.Health) {
+								damageneeded += damage;
+								bombsneeded++;
+							}
+
+							if (greenbombsnearby.Count>0 && greenbombsnearby.Count >= bombsneeded) 
+							{
+								foreach (Unit bomb in greenbombsnearby) {
+									if (bombscounter < bombsneeded) {
+										Ability selfdetonate = UnitExtensions.GetAbilityById (bomb, AbilityId.techies_remote_mines_self_detonate);
+										if (selfdetonate != null) {
+											selfdetonate.UseAbility ();
+											bombscounter++;
+										}
+
 									}
-
 								}
 							}
 						}
 					}
 				}
 			}
+
 			await Task.Delay (25, token);
 
 		}
 
 		private async Task OnUpdate2(CancellationToken token)
 		{
-			if(config.techiesRampage.ForceStaff!=null)
+				
+			if(config.techiesRampage.ForceStaff!=null && config.EnableCheat)
 			{
 				
 				List<Hero> enemies = ObjectManager.GetEntities<Hero> ().Where (x => (x.Team != main.Team) && x.IsVisible && x.IsInRange(context.Owner,config.techiesRampage.ForceStaff.CastRange,true)).ToList();

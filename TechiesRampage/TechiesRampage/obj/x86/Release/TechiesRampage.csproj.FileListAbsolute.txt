@@ -1,0 +1,4 @@
+J:\Documents\Projects\TechiesRampage\TechiesRampage\obj\x86\Release\TechiesRampage.csprojResolveAssemblyReference.cache
+J:\Documents\Projects\TechiesRampage\TechiesRampage\obj\x86\Release\TechiesRampage.csproj.CoreCompileInputs.cache
+J:\Program Files (x86)\Ensage\Cache\build\TechiesRampage\TechiesRampage.dll
+J:\Documents\Projects\TechiesRampage\TechiesRampage\obj\x86\Release\TechiesRampage.dll
